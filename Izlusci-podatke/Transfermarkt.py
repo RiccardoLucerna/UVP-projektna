@@ -62,13 +62,13 @@ def page_to_player(page_content):
 def get_dict_from_player_block(block):
     """Funkcija iz niza za posamezen oglasni blok izlušči podatke o imenu, poziciji
     in opisu ter vrne slovar, ki vsebuje ustrezne podatke."""
-    ime = re.search(r'<td class="hauptlink"><a title=".*" href=".*">(.*)</a></td>', block)
-    pozicija = re.search(r'<td class="hauptlink"><a title=".*" href=".*">.*</a></td></tr><tr><td>(.*)</td></tr></table></td>', block)
-    starost = re.search(r'<td class="zentriert">(.*)</td><td class="zentriert">', block)
-    drzava_1 = re.search(r'<img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" /><br />', block)
-    drzava_2 = re.search(r'<img src=".*" title=".*" alt=".*" class="flaggenrahmen" /><br /><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" />', block)
-    klub = re.search(r'<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" /></a></td>', block)
-    cena = re.search(r'<td class="rechts hauptlink"><a href=".*">(.*)</a>&nbsp;</td></tr>', block)
+    ime = re.search(r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm', block)
+    pozicija = re.search(r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm', block)
+    starost = re.search(r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm', block)
+    drzava_1 = re.search(r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm', block)
+    drzava_2 = re.search(r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm', block)
+    klub = re.search(r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm', block)
+    cena = re.search(r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm', block)
     if ime == None or pozicija == None or starost == None or drzava_1 == None or drzava_2 == None or klub == None or cena == None:
         return None
     return {
