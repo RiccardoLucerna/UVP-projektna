@@ -4,6 +4,10 @@ import requests
 import os
 from unidecode import unidecode
 
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+}
+
 #nogometasi_frontpage_url ='https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
 #nogometni_directory = 'nogometni_podatki_'
 #frontpage_filename = 'transfermarkt.html'
@@ -144,7 +148,7 @@ absolutna_pot = os.path.dirname(os.path.abspath(__file__))
 
 def podatki_o_pozicijah():
     url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url)
+    r = requests.get(url, headers=headers)
     vsebina = r.text
 
     pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
@@ -182,7 +186,7 @@ def podatki_o_pozicijah():
 
 def podatki_o_starosti():
     url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url)
+    r = requests.get(url, headers=headers)
     vsebina = r.text
 
     pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
@@ -220,7 +224,7 @@ def podatki_o_starosti():
 
 def podatki_o_drzavljastvu():
     url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url)
+    r = requests.get(url, headers=headers)
     vsebina = r.text
 
     pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
@@ -258,7 +262,7 @@ def podatki_o_drzavljastvu():
 
 def podatki_o_drzavljastvu_2():
     url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url)
+    r = requests.get(url, headers=headers)
     vsebina = r.text
 
     pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
@@ -296,7 +300,7 @@ def podatki_o_drzavljastvu_2():
 
 def podatki_o_klubu():
     url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url)
+    r = requests.get(url, headers=headers)
     vsebina = r.text
 
     pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
@@ -334,7 +338,7 @@ def podatki_o_klubu():
 
 def podatki_o_ceni():
     url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url)
+    r = requests.get(url, headers=headers)
     vsebina = r.text
 
     pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
