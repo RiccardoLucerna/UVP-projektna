@@ -152,12 +152,12 @@ def podatki_o_pozicijah():
     vsebina = r.text
 
     pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
-    with open(pot, "w") as dat:
+    with open(pot, "w", encoding='utf-8') as dat:
         dat.write(vsebina)
     
     vzorec = re.compile(
-        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
-        r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
+        r'<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
+        r'<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
     #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
     #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
     #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
@@ -184,192 +184,192 @@ def podatki_o_pozicijah():
             pisatelj.writerow([ime, pozicija])
     return igralci_po_pozicijah
 
-def podatki_o_starosti():
-    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url, headers=headers)
-    vsebina = r.text
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
-    with open(pot, "w") as dat:
-        dat.write(vsebina)
-    
-    vzorec = re.compile(
-        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
-    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
-        r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
-    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
-    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
-    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
-    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
-    )
-
-    igralci_po_starosti = {}
-    for match in vzorec.finditer(vsebina):
-        ime = match.groups(1)
-        #pozicija = match.groups(2)
-        starost = int(match.group(3))
-        #drzava_1 = match.group(4)
-        #drzava_2 = match.group(5)
-        #klub = match.group(6)
-        #cena = int(match.group(7))
-        igralci_po_starosti[ime] = starost
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_starosti.csv")
-    with open(pot, "w", newline='') as dat:
-        pisatelj = csv.writer(dat)
-        pisatelj.writerow(["ime", "starost"])
-        for ime, starost in igralci_po_starosti.items():
-            pisatelj.writerow([ime, starost])
-    return igralci_po_starosti
-
-def podatki_o_drzavljastvu():
-    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url, headers=headers)
-    vsebina = r.text
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
-    with open(pot, "w") as dat:
-        dat.write(vsebina)
-    
-    vzorec = re.compile(
-        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
-    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
-    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
-        r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
-    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
-    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
-    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
-    )
-
-    igralci_po_drzavljanstvu = {}
-    for match in vzorec.finditer(vsebina):
-        ime = match.groups(1)
-        #pozicija = match.groups(2)
-        #starost = int(match.group(3))
-        drzava_1 = match.group(4)
-        #drzava_2 = match.group(5)
-        #klub = match.group(6)
-        #cena = int(match.group(7))
-        igralci_po_drzavljanstvu[ime] = drzava_1
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_drzavljanstvu.csv")
-    with open(pot, "w", newline='') as dat:
-        pisatelj = csv.writer(dat)
-        pisatelj.writerow(["ime", "drzava_1"])
-        for ime, drzava_1 in igralci_po_drzavljanstvu.items():
-            pisatelj.writerow([ime, drzava_1])
-    return igralci_po_drzavljanstvu
-
-def podatki_o_drzavljastvu_2():
-    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url, headers=headers)
-    vsebina = r.text
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
-    with open(pot, "w") as dat:
-        dat.write(vsebina)
-    
-    vzorec = re.compile(
-        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
-    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
-    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
-    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
-        r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
-    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
-    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
-    )
-
-    igralci_po_drzavljanstvu_2 = {}
-    for match in vzorec.finditer(vsebina):
-        ime = match.groups(1)
-        #pozicija = match.groups(2)
-        #starost = int(match.group(3))
-        #drzava_1 = match.group(4)
-        drzava_2 = match.group(5)
-        #klub = match.group(6)
-        #cena = int(match.group(7))
-        igralci_po_drzavljanstvu_2[ime] = drzava_2
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_drzavljanstvu_2.csv")
-    with open(pot, "w", newline='') as dat:
-        pisatelj = csv.writer(dat)
-        pisatelj.writerow(["ime", "drzava_2"])
-        for ime, drzava_2 in igralci_po_drzavljanstvu_2.items():
-            pisatelj.writerow([ime, drzava_2])
-    return igralci_po_drzavljanstvu_2
-
-def podatki_o_klubu():
-    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url, headers=headers)
-    vsebina = r.text
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
-    with open(pot, "w") as dat:
-        dat.write(vsebina)
-    
-    vzorec = re.compile(
-        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
-    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
-    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
-    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
-    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
-        r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
-    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
-    )
-
-    igralci_po_klubu = {}
-    for match in vzorec.finditer(vsebina):
-        ime = match.groups(1)
-        #pozicija = match.groups(2)
-        #starost = int(match.group(3))
-        #drzava_1 = match.group(4)
-        #drzava_2 = match.group(5)
-        klub = match.group(6)
-        #cena = int(match.group(7))
-        igralci_po_klubu[ime] = klub
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_klubu.csv")
-    with open(pot, "w", newline='') as dat:
-        pisatelj = csv.writer(dat)
-        pisatelj.writerow(["ime", "klub"])
-        for ime, klub in igralci_po_klubu.items():
-            pisatelj.writerow([ime, klub])
-    return igralci_po_klubu
-
-def podatki_o_ceni():
-    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-    r = requests.get(url, headers=headers)
-    vsebina = r.text
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
-    with open(pot, "w") as dat:
-        dat.write(vsebina)
-    
-    vzorec = re.compile(
-        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
-    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
-    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
-    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
-    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
-    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
-        r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
-    )
-
-    igralci_po_ceni = {}
-    for match in vzorec.finditer(vsebina):
-        ime = match.groups(1)
-        #pozicija = match.groups(2)
-        #starost = int(match.group(3))
-        #drzava_1 = match.group(4)
-        #drzava_2 = match.group(5)
-        #klub = match.group(6)
-        cena = int(match.group(7))
-        igralci_po_ceni[ime] = cena
-
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_ceni.csv")
-    with open(pot, "w", newline='') as dat:
-        pisatelj = csv.writer(dat)
-        pisatelj.writerow(["ime", "cena"])
-        for ime, cena in igralci_po_ceni.items():
-            pisatelj.writerow([ime, cena])
-    return igralci_po_ceni
+#def podatki_o_starosti():
+#    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
+#    r = requests.get(url, headers=headers)
+#    vsebina = r.text
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
+#    with open(pot, "w") as dat:
+#        dat.write(vsebina)
+#    
+#    vzorec = re.compile(
+#        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
+#    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
+#        r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
+#    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
+#    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
+#    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
+#    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
+#    )
+#
+#    igralci_po_starosti = {}
+#    for match in vzorec.finditer(vsebina):
+#        ime = match.groups(1)
+#        #pozicija = match.groups(2)
+#        starost = int(match.group(3))
+#        #drzava_1 = match.group(4)
+#        #drzava_2 = match.group(5)
+#        #klub = match.group(6)
+#        #cena = int(match.group(7))
+#        igralci_po_starosti[ime] = starost
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_starosti.csv")
+#    with open(pot, "w", newline='') as dat:
+#        pisatelj = csv.writer(dat)
+#        pisatelj.writerow(["ime", "starost"])
+#        for ime, starost in igralci_po_starosti.items():
+#            pisatelj.writerow([ime, starost])
+#    return igralci_po_starosti
+#
+#def podatki_o_drzavljastvu():
+#    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
+#    r = requests.get(url, headers=headers)
+#    vsebina = r.text
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
+#    with open(pot, "w") as dat:
+#        dat.write(vsebina)
+#    
+#    vzorec = re.compile(
+#        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
+#    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
+#    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
+#        r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
+#    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
+#    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
+#    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
+#    )
+#
+#    igralci_po_drzavljanstvu = {}
+#    for match in vzorec.finditer(vsebina):
+#        ime = match.groups(1)
+#        #pozicija = match.groups(2)
+#        #starost = int(match.group(3))
+#        drzava_1 = match.group(4)
+#        #drzava_2 = match.group(5)
+#        #klub = match.group(6)
+#        #cena = int(match.group(7))
+#        igralci_po_drzavljanstvu[ime] = drzava_1
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_drzavljanstvu.csv")
+#    with open(pot, "w", newline='') as dat:
+#        pisatelj = csv.writer(dat)
+#        pisatelj.writerow(["ime", "drzava_1"])
+#        for ime, drzava_1 in igralci_po_drzavljanstvu.items():
+#            pisatelj.writerow([ime, drzava_1])
+#    return igralci_po_drzavljanstvu
+#
+#def podatki_o_drzavljastvu_2():
+#    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
+#    r = requests.get(url, headers=headers)
+#    vsebina = r.text
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
+#    with open(pot, "w") as dat:
+#        dat.write(vsebina)
+#    
+#    vzorec = re.compile(
+#        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
+#    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
+#    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
+#    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
+#        r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
+#    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
+#    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
+#    )
+#
+#    igralci_po_drzavljanstvu_2 = {}
+#    for match in vzorec.finditer(vsebina):
+#        ime = match.groups(1)
+#        #pozicija = match.groups(2)
+#        #starost = int(match.group(3))
+#        #drzava_1 = match.group(4)
+#        drzava_2 = match.group(5)
+#        #klub = match.group(6)
+#        #cena = int(match.group(7))
+#        igralci_po_drzavljanstvu_2[ime] = drzava_2
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_drzavljanstvu_2.csv")
+#    with open(pot, "w", newline='') as dat:
+#        pisatelj = csv.writer(dat)
+#        pisatelj.writerow(["ime", "drzava_2"])
+#        for ime, drzava_2 in igralci_po_drzavljanstvu_2.items():
+#            pisatelj.writerow([ime, drzava_2])
+#    return igralci_po_drzavljanstvu_2
+#
+#def podatki_o_klubu():
+#    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
+#    r = requests.get(url, headers=headers)
+#    vsebina = r.text
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
+#    with open(pot, "w") as dat:
+#        dat.write(vsebina)
+#    
+#    vzorec = re.compile(
+#        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
+#    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
+#    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
+#    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
+#    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
+#        r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
+#    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
+#    )
+#
+#    igralci_po_klubu = {}
+#    for match in vzorec.finditer(vsebina):
+#        ime = match.groups(1)
+#        #pozicija = match.groups(2)
+#        #starost = int(match.group(3))
+#        #drzava_1 = match.group(4)
+#        #drzava_2 = match.group(5)
+#        klub = match.group(6)
+#        #cena = int(match.group(7))
+#        igralci_po_klubu[ime] = klub
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_klubu.csv")
+#    with open(pot, "w", newline='') as dat:
+#        pisatelj = csv.writer(dat)
+#        pisatelj.writerow(["ime", "klub"])
+#        for ime, klub in igralci_po_klubu.items():
+#            pisatelj.writerow([ime, klub])
+#    return igralci_po_klubu
+#
+#def podatki_o_ceni():
+#    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
+#    r = requests.get(url, headers=headers)
+#    vsebina = r.text
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
+#    with open(pot, "w") as dat:
+#        dat.write(vsebina)
+#    
+#    vzorec = re.compile(
+#        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
+#    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
+#    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
+#    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
+#    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
+#    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
+#        r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
+#    )
+#
+#    igralci_po_ceni = {}
+#    for match in vzorec.finditer(vsebina):
+#        ime = match.groups(1)
+#        #pozicija = match.groups(2)
+#        #starost = int(match.group(3))
+#        #drzava_1 = match.group(4)
+#        #drzava_2 = match.group(5)
+#        #klub = match.group(6)
+#        cena = int(match.group(7))
+#        igralci_po_ceni[ime] = cena
+#
+#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_ceni.csv")
+#    with open(pot, "w", newline='') as dat:
+#        pisatelj = csv.writer(dat)
+#        pisatelj.writerow(["ime", "cena"])
+#        for ime, cena in igralci_po_ceni.items():
+#            pisatelj.writerow([ime, cena])
+#    return igralci_po_ceni
