@@ -144,6 +144,34 @@ headers = {
 #if __name__ == '__main__':
 #    main()
 
+def parse_vrednost(raw):
+    """
+    Normalize market value string like '€120.00m', '€850k' into integer euros.
+    Returns int (e.g., 120_000_000) or None if unparseable.
+    """
+    if not raw:
+        return None
+    raw = raw.strip()
+    # Remove euro symbol and whitespace
+    if raw.startswith("€"):
+        raw = raw[1:]
+    raw = raw.replace(".", "").replace(",", ".")  # unify decimal
+    multiplier = 1
+    if raw.lower().endswith("m"):
+        multiplier = 1_000_000
+        raw = raw[:-1]
+    elif raw.lower().endswith("k"):
+        multiplier = 1_000
+        raw = raw[:-1]
+    elif raw.lower().endswith("bn"):  # just in case
+        multiplier = 1_000_000_000
+        raw = raw[:-2]
+    try:
+        value = float(raw)
+        return int(value * multiplier)
+    except ValueError:
+        return None
+
 absolutna_pot = os.path.dirname(os.path.abspath(__file__))
 
 def podatki_o_pozicijah():
@@ -155,73 +183,162 @@ def podatki_o_pozicijah():
     with open(pot, "w", encoding='utf-8') as dat:
         dat.write(vsebina)
     
+#    vzorec = re.compile(
+#        r'<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
+#        r'<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
+#    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
+#    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
+#    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
+#    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
+#    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
+#    )
+
+    # Base row-level pattern: name, position, age, and grab rest of row for further field regexes
+    vzorec = re.compile(
+        r'<tr[^>]*?>'                                             # row start
+        r'.*?<td class="hauptlink">.*?'
+        r'<a[^>]*?title="([^"]+)"[^>]*?>.*?</a>.*?</td>'         # group1: name
+        r'.*?<td[^>]*?>\s*([^<\n\r]+?)\s*</td>'                  # group2: position
+        r'.*?<td class="zentriert">\s*(\d{1,2})\s*</td>'         # group3: age
+        r'(.*?)</tr>',                                           # group4: rest of row (non-greedy)
+        re.DOTALL | re.MULTILINE
+    )
+
+    # Nationalities
+    drzava_2_re = re.compile(
+        r'<img[^>]+title="([^"]+)"[^>]*?><br\s*/?>\s*<img[^>]+title="([^"]+)"',
+        re.DOTALL
+    )
+    drzava_1_re = re.compile(
+        r'<td class="zentriert">\s*<img[^>]+title="([^"]+)"',
+        re.DOTALL
+    )
+
+    # Klub
+    klub_re = re.compile(
+        r'<td class="zentriert">\s*<a\s+title="([^"]+)"\s+href="[^"]*">\s*<img[^>]*?\/>\s*</a>\s*</td>',
+        re.DOTALL
+    )
+
+    # Cena (market value)
+    cena_re = re.compile(
+        r'<td class="rechts hauptlink">\s*<a[^>]*?>([^<]+)</a>&nbsp;',
+        re.DOTALL
+    )
+
+    igralci = {}
+    for match in vzorec.finditer(vsebina):
+        ime = match.group(1).strip()
+        pozicija = match.group(2).strip()
+        starost = match.group(3).strip()
+        row_content = match.group(4)
+
+        # Nationality
+        drzava_1, drzava_2 = None, None
+        dvojna = drzava_2_re.search(row_content)
+        if dvojna:
+            drzava_1 = dvojna.group(1).strip()
+            drzava_2 = dvojna.group(2).strip()
+        else:
+            ena = drzava_1_re.search(row_content)
+            if ena:
+                drzava_1 = ena.group(1).strip()
+
+        # Klub
+        klub = None
+        klub_m = klub_re.search(row_content)
+        if klub_m:
+            klub = klub_m.group(1).strip()
+
+        # Cena / market value (raw + normalized)
+        cena_raw = None
+        cena_m = cena_re.search(row_content)
+        if cena_m:
+            cena_raw = cena_m.group(1).strip()
+        cena_normalized = parse_vrednost(cena_raw) if cena_raw else None
+
+        #drzava_1 = match.group(4)
+        #drzava_2 = match.group(5)
+        #klub = match.group(6)
+        #cena = int(match.group(7))
+
+        if ime:
+            igralci[ime] = {
+            "pozicija": pozicija,
+            "starost": starost,
+            "drzava_1": drzava_1,
+            "drzava_2": drzava_2,
+            "klub": klub,
+            "vrednost_raw": cena_raw,
+            "vrednost_eur": cena_normalized
+            }
+
+    print(igralci)
+
+    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi.csv")
+    with open(pot, "w", newline='', encoding='utf-8') as dat:
+        pisatelj = csv.writer(dat)
+        pisatelj.writerow([
+            "ime",
+            "pozicija",
+            "starost",
+            "drzava_1",
+            "drzava_2",
+            "klub",
+            "vrednost_raw",
+            "vrednost_eur"
+        ])
+        for ime, info in igralci.items():
+            pisatelj.writerow([
+                ime,
+                info["pozicija"],
+                info["starost"],
+                info["drzava_1"],
+                info["drzava_2"],
+                info["klub"],
+                info["vrednost_raw"],
+                info["vrednost_eur"]
+            ])
+    return igralci
+
+def podatki_o_starosti():
+    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
+    r = requests.get(url, headers=headers)
+    vsebina = r.text
+
+    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
+    with open(pot, "w", encoding='utf-8') as dat:
+        dat.write(vsebina)
+    
     vzorec = re.compile(
         r'<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
-        r'<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
-    #    r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
+    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
+        r'<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
     #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
     #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
     #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
     #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
     )
 
-    igralci_po_pozicijah = {}
+    igralci_po_starosti = {}
     for match in vzorec.finditer(vsebina):
-        ime = match.groups(1)
-        pozicija = match.groups(2)
-        #starost = int(match.group(3))
+        ime = match.group(1)
+        #pozicija = match.groups(2)
+        starost = match.group(3)
         #drzava_1 = match.group(4)
         #drzava_2 = match.group(5)
         #klub = match.group(6)
         #cena = int(match.group(7))
-        igralci_po_pozicijah[ime] = pozicija
+        igralci_po_starosti[ime] = starost
 
-    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_pozicijah.csv")
-    with open(pot, "w", newline='') as dat:
+    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_starosti.csv")
+    with open(pot, "w", newline='', encoding='utf-8') as dat:
         pisatelj = csv.writer(dat)
-        pisatelj.writerow(["ime", "pozicija"])
-        for ime, pozicija in igralci_po_pozicijah.items():
-            pisatelj.writerow([ime, pozicija])
-    return igralci_po_pozicijah
+        pisatelj.writerow(["ime", "starost"])
+        for ime, starost in igralci_po_starosti.items():
+            pisatelj.writerow([ime, starost])
+    return igralci_po_starosti
 
-#def podatki_o_starosti():
-#    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
-#    r = requests.get(url, headers=headers)
-#    vsebina = r.text
-#
-#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometna_stran.html")
-#    with open(pot, "w") as dat:
-#        dat.write(vsebina)
-#    
-#    vzorec = re.compile(
-#        r'/<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]*)"|<td class="hauptlink"><a title="([a-zA-Zéáí]* [a-zA-Zéáí]* [a-zA-Zéáí]*)"/gm'
-#    #    r'/<td class="hauptlink"><a title=".*" href=".*">.*<\/a><\/td><\/tr><tr><td>(.*)<\/td><\/tr><\/table><\/td>/gm'
-#        r'/<td class="zentriert">(\d*)<\/td><td class="zentriert">/gm'
-#    #    r'/<\/td><td class="zentriert"><img src=".{6,100}" title="(.{2, 25})" alt=".*" class="flaggenrahmen"/gm'
-#    #    r'/<img src=".*" title=".*" alt=".*" class="flaggenrahmen" \/><br \/><img src=".*" title="(.*)" alt=".*" class="flaggenrahmen" \/>/gm'
-#    #    r'/<td class="zentriert"><a title="(.*)" href=".*"><img src=".*" title=".*" alt=".*" class="" \/><\/a><\/td>/gm'
-#    #    r'/<td class="rechts hauptlink"><a href=".*">(.*)<\/a>&nbsp;<\/td><\/tr>/gm'
-#    )
-#
-#    igralci_po_starosti = {}
-#    for match in vzorec.finditer(vsebina):
-#        ime = match.groups(1)
-#        #pozicija = match.groups(2)
-#        starost = int(match.group(3))
-#        #drzava_1 = match.group(4)
-#        #drzava_2 = match.group(5)
-#        #klub = match.group(6)
-#        #cena = int(match.group(7))
-#        igralci_po_starosti[ime] = starost
-#
-#    pot = os.path.join(absolutna_pot, "..", "podatki", "nogometasi_po_starosti.csv")
-#    with open(pot, "w", newline='') as dat:
-#        pisatelj = csv.writer(dat)
-#        pisatelj.writerow(["ime", "starost"])
-#        for ime, starost in igralci_po_starosti.items():
-#            pisatelj.writerow([ime, starost])
-#    return igralci_po_starosti
-#
 #def podatki_o_drzavljastvu():
 #    url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
 #    r = requests.get(url, headers=headers)
