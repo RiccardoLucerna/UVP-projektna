@@ -1,4 +1,4 @@
-ime,pozicija,starost,drzava_1,drzava_2,klub,vrednost_raw,vrednost_eur
+ime,pozicija,starost,drzava_1,drzava_2,klub,cena,stevilna_cena_eur
 Lamine Yamal,Right Winger,18,Spain,Equatorial Guinea,FC Barcelona,€200.00m,20000000000
 Jude Bellingham,Attacking Midfield,22,England,Ireland,Real Madrid,€180.00m,18000000000
 Erling Haaland,Centre-Forward,25,Norway,,Manchester City,€180.00m,18000000000
