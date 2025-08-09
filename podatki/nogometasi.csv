@@ -26,7 +26,7 @@ Raphinha,Left Winger,28,Brazil,Italy,FC Barcelona,€90.00m,9000000000
 Ousmane Dembélé,Right Winger,28,France,,Paris Saint-Germain,€90.00m,9000000000
 Martin Ødegaard,Attacking Midfield,26,Norway,,Arsenal FC,€85.00m,8500000000
 Pau Cubarsí,Centre-Back,18,Spain,,FC Barcelona,€80.00m,8000000000
-João Neves,Defensive Midfield,20,Portugal,,Paris Saint-Germain,€80.00m,8000000000
+João Neves,Central Midfield,20,Portugal,,Paris Saint-Germain,€80.00m,8000000000
 Bruno Guimarães,Defensive Midfield,27,Brazil,Spain,Newcastle United,€80.00m,8000000000
 William Saliba,Centre-Back,24,France,Cameroon,Arsenal FC,€80.00m,8000000000
 Vitinha,Central Midfield,25,Portugal,,Paris Saint-Germain,€80.00m,8000000000
@@ -47,7 +47,7 @@ Nicolò Barella,Central Midfield,28,Italy,,Inter Milan,€75.00m,7500000000
 Harry Kane,Centre-Forward,32,England,,Bayern Munich,€75.00m,7500000000
 Nico Williams,Left Winger,23,Spain,Ghana,Athletic Bilbao,€70.00m,7000000000
 Bradley Barcola,Left Winger,22,France,Togo,Paris Saint-Germain,€70.00m,7000000000
-Benjamin Sesko,Centre-Forward,22,Slovenia,,RB Leipzig,€70.00m,7000000000
+Benjamin Sesko,Centre-Forward,22,Slovenia,,Manchester United,€70.00m,7000000000
 Nuno Mendes,Left-Back,23,Portugal,,Paris Saint-Germain,€70.00m,7000000000
 Xavi Simons,Attacking Midfield,22,Netherlands,Suriname,RB Leipzig,€70.00m,7000000000
 Luis Díaz,Left Winger,28,Colombia,,Bayern Munich,€70.00m,7000000000
@@ -90,7 +90,7 @@ Kenan Yıldız,Left Winger,20,Türkiye,Germany,Juventus FC,€50.00m,5000000000
 Kobbie Mainoo,Central Midfield,20,England,Ghana,Manchester United,€50.00m,5000000000
 Nicolas Jackson,Centre-Forward,24,Senegal,The Gambia,Chelsea FC,€50.00m,5000000000
 Savinho,Right Winger,21,Brazil,,Manchester City,€50.00m,5000000000
-Jamie Gittens,Left Winger,20,England,Barbados,Chelsea FC,€50.00m,5000000000
+Jamie Gittens,Left Winger,21,England,Barbados,Chelsea FC,€50.00m,5000000000
 Jarrad Branthwaite,Centre-Back,23,England,,Everton FC,€50.00m,5000000000
 Piero Hincapié,Centre-Back,23,Ecuador,,Bayer 04 Leverkusen,€50.00m,5000000000
 Fermín López,Attacking Midfield,22,Spain,,FC Barcelona,€50.00m,5000000000
@@ -128,7 +128,7 @@ Milos Kerkez,Left-Back,21,Hungary,Serbia,Liverpool FC,€45.00m,4500000000
 Rayan Cherki,Right Winger,21,France,Algeria,Manchester City,€45.00m,4500000000
 Mateo Retegui,Centre-Forward,26,Italy,Argentina,Al-Qadsiah FC,€45.00m,4500000000
 Gonçalo Inácio,Centre-Back,23,Portugal,,Sporting CP,€45.00m,4500000000
-Darwin Núñez,Centre-Forward,26,Uruguay,,Liverpool FC,€45.00m,4500000000
+Darwin Núñez,Centre-Forward,26,Uruguay,,Al-Hilal SFC,€45.00m,4500000000
 Mohammed Kudus,Right Winger,25,Ghana,,Tottenham Hotspur,€45.00m,4500000000
 Amad Diallo,Right Winger,23,Cote d'Ivoire,Italy,Manchester United,€45.00m,4500000000
 Jonathan David,Centre-Forward,25,Canada,United States,Juventus FC,€45.00m,4500000000
@@ -189,7 +189,7 @@ Lucas Bergvall,Central Midfield,19,Sweden,,Tottenham Hotspur,€38.00m,380000000
 Pedro Porro,Right-Back,25,Spain,,Tottenham Hotspur,€38.00m,3800000000
 Matthijs de Ligt,Centre-Back,25,Netherlands,,Manchester United,€38.00m,3800000000
 Youri Tielemans,Central Midfield,28,Belgium,DR Congo,Aston Villa,€38.00m,3800000000
-Bernardo Silva,Attacking Midfield,30,Portugal,,Manchester City,€38.00m,3800000000
+Bernardo Silva,Attacking Midfield,31,Portugal,,Manchester City,€38.00m,3800000000
 Endrick,Centre-Forward,19,Brazil,,Real Madrid,€35.00m,3500000000
 Nico Paz,Attacking Midfield,20,Argentina,Spain,Como 1907,€35.00m,3500000000
 Jorrel Hato,Left-Back,19,Netherlands,Curacao,Chelsea FC,€35.00m,3500000000
@@ -208,7 +208,7 @@ Antony,Right Winger,25,Brazil,,Manchester United,€35.00m,3500000000
 Matheus Nunes,Central Midfield,26,Portugal,Brazil,Manchester City,€35.00m,3500000000
 Rayan Aït-Nouri,Left-Back,24,Algeria,France,Manchester City,€35.00m,3500000000
 Giorgio Scalvini,Centre-Back,21,Italy,,Atalanta BC,€35.00m,3500000000
-Enzo Millot,Attacking Midfield,23,France,Martinique,VfB Stuttgart,€35.00m,3500000000
+Enzo Millot,Attacking Midfield,23,France,Martinique,Al-Ahli SFC,€35.00m,3500000000
 Edmond Tapsoba,Centre-Back,26,Burkina Faso,,Bayer 04 Leverkusen,€35.00m,3500000000
 Riccardo Calafiori,Left-Back,23,Italy,,Arsenal FC,€35.00m,3500000000
 Ronald Araujo,Centre-Back,26,Uruguay,Spain,FC Barcelona,€35.00m,3500000000
@@ -223,7 +223,7 @@ Davide Frattesi,Central Midfield,25,Italy,,Inter Milan,€35.00m,3500000000
 Dan Ndoye,Right Winger,24,Switzerland,Senegal,Nottingham Forest,€35.00m,3500000000
 Teun Koopmeiners,Attacking Midfield,27,Netherlands,,Juventus FC,€35.00m,3500000000
 Dušan Vlahović,Centre-Forward,25,Serbia,,Juventus FC,€35.00m,3500000000
-Antonee Robinson,Left-Back,27,United States,England,Fulham FC,€35.00m,3500000000
+Antonee Robinson,Left-Back,28,United States,England,Fulham FC,€35.00m,3500000000
 Christopher Nkunku,Centre-Forward,27,France,DR Congo,Chelsea FC,€35.00m,3500000000
 Theo Hernández,Left-Back,27,France,Spain,Al-Hilal SFC,€35.00m,3500000000
 Mikel Merino,Central Midfield,29,Spain,,Arsenal FC,€35.00m,3500000000
@@ -258,7 +258,7 @@ Jesús Rodríguez,Left Winger,19,Spain,,Como 1907,€30.00m,3000000000
 Assane Diao,Left Winger,19,Senegal,Spain,Como 1907,€30.00m,3000000000
 Franco Mastantuono,Right Winger,17,Argentina,Italy,CA River Plate,€30.00m,3000000000
 Yankuba Minteh,Right Winger,21,The Gambia,,Brighton &amp; Hove Albion,€30.00m,3000000000
-Vitor Reis,Centre-Back,19,Brazil,,Manchester City,€30.00m,3000000000
+Vitor Reis,Centre-Back,19,Brazil,,Girona FC,€30.00m,3000000000
 Mikel Jauregizar,Central Midfield,21,Spain,,Athletic Bilbao,€30.00m,3000000000
 Tom Bischof,Central Midfield,20,Germany,,Bayern Munich,€30.00m,3000000000
 Malick Fofana,Left Winger,20,Belgium,Guinea,Olympique Lyon,€30.00m,3000000000
@@ -283,7 +283,7 @@ Kevin Schade,Left Winger,23,Germany,Nigeria,Brentford FC,€30.00m,3000000000
 Reece James,Right-Back,25,England,,Chelsea FC,€30.00m,3000000000
 David Neres,Right Winger,28,Brazil,,SSC Napoli,€30.00m,3000000000
 Samuele Ricci,Defensive Midfield,23,Italy,,AC Milan,€30.00m,3000000000
-Lucas Chevalier,Goalkeeper,23,France,,LOSC Lille,€30.00m,3000000000
+Lucas Chevalier,Goalkeeper,23,France,,Paris Saint-Germain,€30.00m,3000000000
 Nick Woltemade,Second Striker,23,Germany,,VfB Stuttgart,€30.00m,3000000000
 Orkun Kökçü,Central Midfield,24,Türkiye,Netherlands,Besiktas JK,€30.00m,3000000000
 Douglas Luiz,Central Midfield,27,Brazil,,Juventus FC,€30.00m,3000000000
@@ -335,7 +335,7 @@ Jakub Kiwior,Centre-Back,25,Poland,,Arsenal FC,€28.00m,2800000000
 Felix Nmecha,Central Midfield,24,Germany,England,Borussia Dortmund,€28.00m,2800000000
 Vitaliy Mykolenko,Left-Back,26,Ukraine,,Everton FC,€28.00m,2800000000
 Jadon Sancho,Left Winger,25,England,Jamaica,Manchester United,€28.00m,2800000000
-Leon Bailey,Right Winger,27,Jamaica,,Aston Villa,€28.00m,2800000000
+Leon Bailey,Right Winger,28,Jamaica,,Aston Villa,€28.00m,2800000000
 Mason Mount,Attacking Midfield,26,England,,Manchester United,€28.00m,2800000000
 Manuel Akanji,Centre-Back,30,Switzerland,Nigeria,Manchester City,€28.00m,2800000000
 Unai Simón,Goalkeeper,28,Spain,,Athletic Bilbao,€28.00m,2800000000
@@ -379,7 +379,7 @@ Nuno Tavares,Left-Back,25,Portugal,Cape Verde,SS Lazio,€25.00m,2500000000
 Maximilian Kilman,Centre-Back,28,England,Ukraine,West Ham United,€25.00m,2500000000
 Taty Castellanos,Centre-Forward,26,Argentina,,SS Lazio,€25.00m,2500000000
 Eduard Spertsyan,Attacking Midfield,25,Armenia,Russia,FC Krasnodar,€25.00m,2500000000
-Evann Guessand,Centre-Forward,24,Cote d'Ivoire,France,OGC Nice,€25.00m,2500000000
+Evann Guessand,Centre-Forward,24,Cote d'Ivoire,France,Aston Villa,€25.00m,2500000000
 Edon Zhegrova,Right Winger,26,Kosovo,Germany,LOSC Lille,€25.00m,2500000000
 Daniel Muñoz,Right-Back,29,Colombia,,Crystal Palace,€25.00m,2500000000
 Wesley Fofana,Centre-Back,24,France,Cote d'Ivoire,Chelsea FC,€25.00m,2500000000
@@ -445,7 +445,7 @@ Stefanos Tzimas,Centre-Forward,19,Greece,,Brighton &amp; Hove Albion,€22.00m,2
 Arthur Vermeeren,Defensive Midfield,20,Belgium,,RB Leipzig,€22.00m,2200000000
 Lewis Miley,Central Midfield,19,England,,Newcastle United,€22.00m,2200000000
 Lamine Camara,Central Midfield,21,Senegal,,AS Monaco,€22.00m,2200000000
-Roger,Right Winger,19,Portugal,Guinea-Bissau,SC Braga,€22.00m,2200000000
+Roger Fernandes,Right Winger,19,Portugal,Guinea-Bissau,SC Braga,€22.00m,2200000000
 Jobe Bellingham,Central Midfield,19,England,Ireland,Borussia Dortmund,€22.00m,2200000000
 Omari Hutchinson,Attacking Midfield,21,England,Jamaica,Ipswich Town,€22.00m,2200000000
 Georges Mikautadze,Centre-Forward,24,Georgia,France,Olympique Lyon,€22.00m,2200000000
