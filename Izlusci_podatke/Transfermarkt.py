@@ -2,6 +2,7 @@ import re
 import csv
 import requests
 import os
+import html
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
@@ -85,7 +86,7 @@ def podatki():
         )
 
         for match in vzorec.finditer(vsebina):
-            ime = match.group(1).strip()
+            ime = html.unescape(match.group(1).strip())
             pozicija = match.group(2).strip()
             starost = match.group(3).strip()
             neobdelani_podatki = match.group(4)
@@ -105,7 +106,7 @@ def podatki():
             klub = None
             klub_m = klub_re.search(neobdelani_podatki)
             if klub_m:
-                klub = klub_m.group(1).strip()
+                klub = html.unescape(klub_m.group(1).strip())
 
             # Cena (neobdelana + razčlenjena)
             cena = None
@@ -134,7 +135,7 @@ def podatki():
 
     print(igralci)
 
-    # Pridobivanje HTML datoteke
+    # Pridobivanje CSV datoteke
     pot_csv = os.path.join(absolutna_pot, "..", "podatki", "nogometasi.csv")
     with open(pot_csv, "w", newline='', encoding='utf-8') as dat:
         pisatelj = csv.writer(dat)
