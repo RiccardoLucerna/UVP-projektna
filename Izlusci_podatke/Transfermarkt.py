@@ -9,15 +9,17 @@ headers = {
 }
 
 def razclenitev_vrednosti(cena):
-    """Iz niza cifre, kot je '€120.00m' ali '€850k' spremeni v število.
-    Vrne število (npr. 120_000_000) ali None, če ni mogoče razčleniti."""
+    """
+    Iz niza cifre, kot je '€120.00m' ali '€850k' spremeni v število.
+    Vrne število (npr. 120_000_000) ali None, če ni mogoče razčleniti.
+    """
     if not cena:
         return None
     cena = cena.strip()
     # Odstrani simbol evra in presledke
     if cena.startswith("€"):
         cena = cena[1:]
-    cena = cena.replace(".", "").replace(",", ".")  # izenači decimalke
+    cena = cena.replace(".", "").replace(",", ".")  # Izenači decimalke
     veckratnik = 1
     if cena.lower().endswith("m"):
         veckratnik = 1_000_000
@@ -34,18 +36,22 @@ def razclenitev_vrednosti(cena):
 absolutna_pot = os.path.dirname(os.path.abspath(__file__))
 
 def podatki():
+    '''
+    To je glavna funkicija, ki bo iz spletnih straneh pobrala podatke,
+    jih poiskala ter ustvarila ustrezno csv datoteko, ki bomo kasneje uporabili za analizo.
+    '''
     glavni_url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
     page = 1
     igralci = {}
 
     while True:
         url = glavni_url if page == 1 else f"{glavni_url}?page={page}"
-        print(f"{page}. stran v teku ...")
+        print(f"{page}. stran v teku ...")  # Tako bomo vedeli pri kateri strani pobira podatke v primeru težav.
 
         r = requests.get(url, headers=headers)
         vsebina = r.text
 
-        # Pridobivanje HTML datoteke
+        # --- Pridobivanje HTML datoteke ---
         pot_html = os.path.join(absolutna_pot, "..", "podatki", f"nogometna_stran_{page}.html")
         with open(pot_html, "w", encoding='utf-8') as dat:
             dat.write(vsebina)
@@ -135,7 +141,7 @@ def podatki():
 
     print(igralci)
 
-    # Pridobivanje CSV datoteke
+    # --- Pridobivanje CSV datoteke ---
     pot_csv = os.path.join(absolutna_pot, "..", "podatki", "nogometasi.csv")
     with open(pot_csv, "w", newline='', encoding='utf-8') as dat:
         pisatelj = csv.writer(dat)
