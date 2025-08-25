@@ -37,7 +37,7 @@ absolutna_pot = os.path.dirname(os.path.abspath(__file__))
 
 def podatki():
     '''
-    To je glavna funkicija, ki bo iz spletnih straneh pobrala podatke,
+    To je glavna funkcija, ki bo iz spletnih straneh pobrala podatke,
     jih poiskala ter ustvarila ustrezno csv datoteko, ki bomo kasneje uporabili za analizo.
     '''
     glavni_url = 'https://www.transfermarkt.com/marktwerte/wertvollstespieler/marktwertetop'
@@ -46,7 +46,7 @@ def podatki():
 
     while True:
         url = glavni_url if page == 1 else f"{glavni_url}?page={page}"
-        print(f"{page}. stran v teku ...")  # Tako bomo vedeli pri kateri strani pobira podatke v primeru težav.
+        print(f"{page}. stran v teku ...")  # Tako bomo vedeli pri kateri strani pobira podatke v primeru težav
 
         r = requests.get(url, headers=headers)
         vsebina = r.text
